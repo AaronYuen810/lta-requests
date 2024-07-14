@@ -12,10 +12,16 @@ from datetime import datetime, timezone, timedelta
 from lta import get_bus_arrival
 from datetime import timezone
 
+from werkzeug.middleware.proxy_fix import ProxyFix
+
+
 from logger import NAME
 
 app = Flask(NAME)
 CORS(app)
+app.wsgi_app = ProxyFix(
+    app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
+)
 app.logger.setLevel(logging.DEBUG)
 
 SGT = timezone(timedelta(hours=8))
