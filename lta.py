@@ -20,10 +20,11 @@ def get_bus_arrival(stop_id: int):
 
     payload = {"BusStopCode": stop_id}
 
-    headers = {"AccountKey": os.getenv("LTA_ACCOUNT_KEY"), "acccept": "application/json"}
+    headers = {"AccountKey": os.getenv("LTA_ACCOUNT_KEY"), "acccept": "application/json", "X-Accel-Buffering": 'no'}
 
     try:
         response = requests.request("GET", url, headers=headers, params=payload)
+        logger.info(f"\n{response.request.url=}\n{response.request.headers=}")
         json_data = response.json()
     except requests.exceptions.JSONDecodeError as e:
         logger.error(e)
