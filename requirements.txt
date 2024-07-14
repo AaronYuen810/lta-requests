@@ -2,4 +2,4 @@ Flask
 requests
 python-dotenv
 pytz
-flask-cors`
+flask-cors
