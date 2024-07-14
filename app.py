@@ -30,7 +30,7 @@ def bus_arrival(stop_id: int) -> Response:
     json_data = get_bus_arrival(stop_id)
     # json_data["request_time"] = datetime.now(SGT)
 
-    return jsonify(json_data)
+    return json_data
 
 
 with app.test_request_context():

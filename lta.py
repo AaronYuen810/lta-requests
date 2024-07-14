@@ -20,7 +20,7 @@ def get_bus_arrival(stop_id: int):
 
     payload = {"BusStopCode": stop_id}
 
-    headers = {"AccountKey": os.getenv("LTA_ACCOUNT_KEY")}
+    headers = {"AccountKey": os.getenv("LTA_ACCOUNT_KEY"), "acccept": "application/json"}
 
     try:
         response = requests.request("GET", url, headers=headers, params=payload)
