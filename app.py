@@ -19,9 +19,7 @@ from logger import NAME
 
 app = Flask(NAME)
 CORS(app)
-app.wsgi_app = ProxyFix(
-    app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
-)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 app.logger.setLevel(logging.DEBUG)
 
 SGT = timezone(timedelta(hours=8))
@@ -36,7 +34,7 @@ def hello_world():
 def bus_arrival(stop_id: int) -> Response:
 
     json_data = get_bus_arrival(stop_id)
-    # json_data["request_time"] = datetime.now(SGT)
+    json_data["request_time"] = datetime.now(SGT)
 
     return jsonify(json_data)
 

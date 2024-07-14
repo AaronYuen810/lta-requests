@@ -15,21 +15,25 @@ load_dotenv()
 def get_bus_arrival(stop_id: int):
     """Send GET request to LTA Bus Arrival API and return the arrival timings of all buses in that bus stop as of request time."""
     json_data = None
-    
+
     url = "http://datamall2.mytransport.sg/ltaodataservice/BusArrivalv2"
 
     payload = {"BusStopCode": stop_id}
 
-    headers = {"AccountKey": os.getenv("LTA_ACCOUNT_KEY"), "acccept": "application/json", "X-Accel-Buffering": 'no'}
+    headers = {
+        "AccountKey": os.getenv("LTA_ACCOUNT_KEY"),
+        "acccept": "application/json",
+        "X-Accel-Buffering": "no",
+    }
 
     try:
         response = requests.request("GET", url, headers=headers, params=payload)
-        logger.info(f"\n{response.request.url=}\n{response.request.headers=}")
         json_data = response.json()
+
     except requests.exceptions.JSONDecodeError as e:
-        logger.error(e)
-        logger.debug(response.content)
-        
+        logger.error("JSON Decode Error:", e)
+        logger.debug("Response payload:", response.content)
+
     return json_data
 
 
