@@ -14,6 +14,8 @@ load_dotenv()
 
 def get_bus_arrival(stop_id: int):
     """Send GET request to LTA Bus Arrival API and return the arrival timings of all buses in that bus stop as of request time."""
+    json_data = None
+    
     url = "http://datamall2.mytransport.sg/ltaodataservice/BusArrivalv2"
 
     payload = {"BusStopCode": stop_id}
@@ -23,11 +25,10 @@ def get_bus_arrival(stop_id: int):
     try:
         response = requests.request("GET", url, headers=headers, params=payload)
         json_data = response.json()
-
     except requests.exceptions.JSONDecodeError as e:
         logger.error(e)
-        logger.debug(response)
-
+        logger.debug(response.content)
+        
     return json_data
 
 
