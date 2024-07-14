@@ -1,7 +1,13 @@
+import logging
 from typing import Iterator
 import requests
 import os
 from dotenv import load_dotenv
+
+from logger import NAME
+
+logger = logging.getLogger(NAME)
+logger.setLevel(logging.INFO)
 
 load_dotenv()
 
@@ -14,12 +20,15 @@ def get_bus_arrival(stop_id: int):
 
     headers = {"AccountKey": os.getenv("LTA_ACCOUNT_KEY")}
 
-    response = requests.request("GET", url, headers=headers, params=payload)
+    try:
+        response = requests.request("GET", url, headers=headers, params=payload)
+        json_data = response.json()
 
-    # with open('sample.json', 'w') as f:
-    #     json.dump(response.json(), f)
+    except requests.exceptions.JSONDecodeError as e:
+        logger.error(e)
+        logger.debug(response)
 
-    return response.json()
+    return json_data
 
 
 def format_response():
