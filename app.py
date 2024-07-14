@@ -6,6 +6,7 @@ This app will serve my bus arrival widget to inform me the optimal time for me t
 
 import logging
 from flask import Flask, Response, jsonify, url_for
+from flask_cors import CORS
 from datetime import datetime, timezone, timedelta
 
 from lta import get_bus_arrival
@@ -14,6 +15,7 @@ from datetime import timezone
 from logger import NAME
 
 app = Flask(NAME)
+CORS(app)
 app.logger.setLevel(logging.DEBUG)
 
 SGT = timezone(timedelta(hours=8))
@@ -30,7 +32,7 @@ def bus_arrival(stop_id: int) -> Response:
     json_data = get_bus_arrival(stop_id)
     # json_data["request_time"] = datetime.now(SGT)
 
-    return json_data
+    return jsonify(json_data)
 
 
 with app.test_request_context():
